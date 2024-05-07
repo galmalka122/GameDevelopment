@@ -1,11 +1,14 @@
 #include "Game.h"
 
 
+Game::Game() : window("First Look") {}
+
 /****************************************************************************
 *             This method is where we put all the game logic.               *
 /****************************************************************************/
 void Game::Update()
 {
+	window.Update();
 }
 
 
@@ -24,10 +27,13 @@ void Game::LateUpdate()
 *******************************************************************************/
 void Game::Draw()
 {
+	window.BeginDraw();
+
+	window.EndDraw();
 }
 
 
 bool Game::IsRunning()
 {
-	return true;
+	return window.IsOpen();
 }
