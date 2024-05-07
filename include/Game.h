@@ -1,12 +1,16 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef Game_h
+#define Game_h
+
+#include "Window.h"
 
 class Game
 {
 
-
 public:
 
+	Game();
+
+	~Game() = default;
 	
 	void Update(); // All the game logic such as movement, A.I., animation...
 	
@@ -16,11 +20,14 @@ public:
 
 	bool IsRunning();
 
+private:
+
+	Window window;
 
 };
 
 
-#endif // !GAME_H
+#endif // !Game_h
 
 
 
