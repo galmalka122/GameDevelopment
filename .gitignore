@@ -4,4 +4,7 @@
 
 /App.exe
 /.vs
+/.idea
+/CMakePresets.json
 /out/build/x64-debug
+/cmake-build-debug
