@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "Window.h"
+#include "WorkingDirectory.h"
 
 class Game
 {
@@ -21,6 +22,11 @@ public:
 private:
 
 	Window window;
+
+    WorkingDirectory workingDir;
+
+    sf::Texture vikingTexture;
+    sf::Sprite vikingSprite;
 
 };
 
