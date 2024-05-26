@@ -17,7 +17,9 @@ public:
 	
 	void LateUpdate(); // Calculations which based on the update method.
 
-	void Draw(); // Draws all entities after the update methods 
+	void Draw(); // Draws all entities after the update methods
+
+    void CalculateDeltaTime();
 
 	bool IsRunning();
 
@@ -29,6 +31,9 @@ private:
 
     sf::Texture vikingTexture;
     sf::Sprite vikingSprite;
+
+    sf::Clock clock;
+    float deltaTime;
 
 };
 

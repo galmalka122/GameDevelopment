@@ -6,6 +6,8 @@ Game::Game() : window("First Look") {
     vikingTexture.loadFromFile(workingDir.Get() + "viking.png");
     vikingSprite.setTexture(vikingTexture);
 
+    deltaTime = clock.restart().asSeconds();
+
 }
 
 /****************************************************************************
@@ -13,6 +15,13 @@ Game::Game() : window("First Look") {
 /****************************************************************************/
 void Game::Update()
 {
+
+    const sf::Vector2f& spritePos = vikingSprite.getPosition();
+    const int pixelsToMovePerSec = 100;
+    const float frameMovement = pixelsToMovePerSec * deltaTime;
+
+    vikingSprite.setPosition(spritePos.x + 1 * frameMovement, spritePos.y);
+
 	window.Update();
 }
 
@@ -43,4 +52,10 @@ void Game::Draw()
 bool Game::IsRunning()
 {
 	return window.IsOpen();
+}
+
+void Game::CalculateDeltaTime() {
+
+    deltaTime = clock.restart().asSeconds();
+
 }
