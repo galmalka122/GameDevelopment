@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "WorkingDirectory.h"
+#include "Input.h"
 
 class Game
 {
@@ -23,6 +24,8 @@ public:
 
 	bool IsRunning();
 
+    void CaptureInput();
+
 private:
 
 	Window window;
@@ -34,6 +37,8 @@ private:
 
     sf::Clock clock;
     float deltaTime;
+
+    Input input;
 
 };
 

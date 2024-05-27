@@ -8,6 +8,8 @@ Game::Game() : window("First Look") {
 
     deltaTime = clock.restart().asSeconds();
 
+
+
 }
 
 /****************************************************************************
@@ -17,10 +19,37 @@ void Game::Update()
 {
 
     const sf::Vector2f& spritePos = vikingSprite.getPosition();
-    const int pixelsToMovePerSec = 100;
-    const float frameMovement = pixelsToMovePerSec * deltaTime;
+    const int moveSpeed = 100;
 
-    vikingSprite.setPosition(spritePos.x + 1 * frameMovement, spritePos.y);
+    int xMove = 0, yMove = 0;
+
+    if(input.IsKeyPressed(Input::Key::Left)){
+
+        xMove = -moveSpeed;
+
+    }
+
+    else if(input.IsKeyPressed(Input::Key::Right)){
+
+        xMove = moveSpeed;
+
+    }
+
+    if(input.IsKeyPressed(Input::Key::Up)){
+
+        yMove = -moveSpeed;
+
+    }
+
+    else if(input.IsKeyPressed(Input::Key::Down)){
+
+        yMove = moveSpeed;
+
+    }
+
+    sf::Vector2f movePos = {xMove * deltaTime, yMove * deltaTime};
+
+    vikingSprite.setPosition(spritePos + movePos);
 
 	window.Update();
 }
@@ -57,5 +86,11 @@ bool Game::IsRunning()
 void Game::CalculateDeltaTime() {
 
     deltaTime = clock.restart().asSeconds();
+
+}
+
+void Game::CaptureInput() {
+
+    input.Update();
 
 }
