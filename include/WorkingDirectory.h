@@ -1,7 +1,3 @@
-//
-// Created by gal on 5/23/2024.
-//
-
 #ifndef WORKINGDIRECTORY_H
 #define WORKINGDIRECTORY_H
 
@@ -14,6 +10,7 @@
 class WorkingDirectory {
 
 public:
+
     WorkingDirectory();
 
     inline const std::string& Get() { return path; };
