@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "WorkingDirectory.h"
 #include "Input.h"
+#include "SceneStateMachine.h"
 
 class Game
 {
@@ -39,6 +40,8 @@ private:
     float deltaTime;
 
     Input input;
+
+    SceneStateMachine sceneManager;
 
 };
 

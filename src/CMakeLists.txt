@@ -4,4 +4,7 @@ target_sources(GameDevelopment PRIVATE	"main.cpp"
 										"WorkingDirectory.cpp"
 										"Bitmask.cpp"
 										"Input.cpp"
+										"SceneStateMachine.cpp"
+										"SceneSplashScreen.cpp"
+										"SceneGame.cpp"
 )

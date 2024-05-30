@@ -1,10 +1,20 @@
 #include "Game.h"
+#include "SceneSplashScreen.h"
+#include "SceneGame.h"
 
 
 Game::Game() : window("First Look") {
 
-    vikingTexture.loadFromFile(workingDir.Get() + "viking.png");
-    vikingSprite.setTexture(vikingTexture);
+    std::shared_ptr<SceneSplashScreen> splashScreen = std::make_shared<SceneSplashScreen>(workingDir, sceneManager,
+                                                                                          window);
+
+    std::shared_ptr<SceneGame> sceneGame = std::make_shared<SceneGame>(workingDir);
+
+    unsigned int splashScreenID = sceneManager.Add(splashScreen);
+    unsigned int gameSceneID = sceneManager.Add(sceneGame);
+
+    splashScreen->SetSwitchToScene(gameSceneID);
+    sceneManager.SwitchTo(splashScreenID);
 
     deltaTime = clock.restart().asSeconds();
 
@@ -18,40 +28,9 @@ Game::Game() : window("First Look") {
 void Game::Update()
 {
 
-    const sf::Vector2f& spritePos = vikingSprite.getPosition();
-    const int moveSpeed = 100;
+    window.Update();
+    sceneManager.Update(deltaTime);
 
-    int xMove = 0, yMove = 0;
-
-    if(input.IsKeyPressed(Input::Key::Left)){
-
-        xMove = -moveSpeed;
-
-    }
-
-    else if(input.IsKeyPressed(Input::Key::Right)){
-
-        xMove = moveSpeed;
-
-    }
-
-    if(input.IsKeyPressed(Input::Key::Up)){
-
-        yMove = -moveSpeed;
-
-    }
-
-    else if(input.IsKeyPressed(Input::Key::Down)){
-
-        yMove = moveSpeed;
-
-    }
-
-    sf::Vector2f movePos = {xMove * deltaTime, yMove * deltaTime};
-
-    vikingSprite.setPosition(spritePos + movePos);
-
-	window.Update();
 }
 
 
@@ -59,9 +38,7 @@ void Game::Update()
 * This method is executed right after the Update method, for any calculations *
 *                    that should rely on this updates.                        *
 ******************************************************************************/
-void Game::LateUpdate()
-{
-}
+void Game::LateUpdate(){ sceneManager.LateUpdate(deltaTime); }
 
 
 /*******************************************************************************
@@ -72,25 +49,14 @@ void Game::Draw()
 {
 	window.BeginDraw();
 
-    window.Draw(vikingSprite);
+    sceneManager.Draw(window);
 
 	window.EndDraw();
 }
 
 
-bool Game::IsRunning()
-{
-	return window.IsOpen();
-}
+bool Game::IsRunning() { return window.IsOpen(); }
 
-void Game::CalculateDeltaTime() {
+void Game::CalculateDeltaTime() { deltaTime = clock.restart().asSeconds(); }
 
-    deltaTime = clock.restart().asSeconds();
-
-}
-
-void Game::CaptureInput() {
-
-    input.Update();
-
-}
+void Game::CaptureInput() { sceneManager.ProcessInput(); }
