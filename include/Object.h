@@ -12,7 +12,7 @@ class Object{
 
 public:
 
-    Object() { transform = AddComponent<C_Transform>(); }
+    Object() : queuedForRemoval(false) { transform = AddComponent<C_Transform>(); }
 
     // Called when the object is created.
     void Awake();
@@ -23,6 +23,9 @@ public:
     void Update(float deltaTime);
     void LateUpdate(float deltaTime);
     void Draw(Window& window);
+
+    bool IsQueuedForRemoval();
+    void QueueForRemoval();
 
     template<class T> std::shared_ptr<T> AddComponent(){
 
@@ -63,7 +66,8 @@ public:
 private:
 
     std::vector<std::shared_ptr<Component>> components;
-    
+    bool queuedForRemoval;
+
 };
 
 #endif // Object_h

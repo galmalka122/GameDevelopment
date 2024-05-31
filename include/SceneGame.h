@@ -8,6 +8,7 @@
 #include "C_Sprite.h"
 #include "C_KeyboardMovement.h"
 #include "ResourceAllocator.h"
+#include "ObjectCollection.h"
 
 class SceneGame : public Scene{
 
@@ -25,7 +26,7 @@ public:
 
 private:
 
-    std::shared_ptr<Object> player;
+    ObjectCollection objects;
 
     WorkingDirectory& workingDir;
     ResourceAllocator<sf::Texture>& textureAllocator;
