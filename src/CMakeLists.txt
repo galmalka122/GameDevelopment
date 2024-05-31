@@ -7,4 +7,6 @@ target_sources(GameDevelopment PRIVATE	"main.cpp"
 										"SceneStateMachine.cpp"
 										"SceneSplashScreen.cpp"
 										"SceneGame.cpp"
+										"Object.cpp"
+										"CSprite.cpp"
 )

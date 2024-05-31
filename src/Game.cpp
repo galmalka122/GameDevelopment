@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "SceneSplashScreen.h"
 #include "SceneGame.h"
+#include "Object.h"
 
 
 Game::Game() : window("First Look") {

@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "Input.h"
 #include "WorkingDirectory.h"
+#include "Object.h"
+#include "CSprite.h"
 
 class SceneGame : public Scene{
 
@@ -20,8 +22,7 @@ public:
 
 private:
 
-    sf::Texture vikingTexture;
-    sf::Sprite vikingSprite;
+    std::shared_ptr<Object> player;
 
     WorkingDirectory& workingDir;
     Input input;
