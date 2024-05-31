@@ -8,5 +8,7 @@ target_sources(GameDevelopment PRIVATE	"main.cpp"
 										"SceneSplashScreen.cpp"
 										"SceneGame.cpp"
 										"Object.cpp"
-										"CSprite.cpp"
+										"C_Sprite.cpp"
+										"C_Transform.cpp"
+										"C_KeyboardMovement.cpp"
 )

@@ -6,10 +6,13 @@
 
 #include "Window.h"
 #include "Component.h"
+#include "C_Transform.h"
 
 class Object{
 
 public:
+
+    Object() { transform = AddComponent<C_Transform>(); }
 
     // Called when the object is created.
     void Awake();
@@ -54,6 +57,8 @@ public:
 
         }
     }
+
+    std::shared_ptr<C_Transform> transform;
 
 private:
 

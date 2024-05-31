@@ -22,7 +22,7 @@ void SceneStateMachine::Update(float deltaTime) {
 void SceneStateMachine::LateUpdate(float deltaTime) {
 
     if(curScene){
-        curScene->Update(deltaTime);
+        curScene->LateUpdate(deltaTime);
     }
 
 }
