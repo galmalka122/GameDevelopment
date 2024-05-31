@@ -7,9 +7,9 @@
 Game::Game() : window("First Look") {
 
     std::shared_ptr<SceneSplashScreen> splashScreen = std::make_shared<SceneSplashScreen>(workingDir, sceneManager,
-                                                                                          window);
+                                                                                          window, textureAllocator);
 
-    std::shared_ptr<SceneGame> sceneGame = std::make_shared<SceneGame>(workingDir);
+    std::shared_ptr<SceneGame> sceneGame = std::make_shared<SceneGame>(workingDir, textureAllocator);
 
     unsigned int splashScreenID = sceneManager.Add(splashScreen);
     unsigned int gameSceneID = sceneManager.Add(sceneGame);

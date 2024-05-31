@@ -3,6 +3,7 @@
 
 
 #include "Component.h"
+#include "ResourceAllocator.h"
 
 class C_Sprite : public Component{
 
@@ -12,6 +13,9 @@ public:
 
     // Loads the sprite from filePath.
     void Load(const std::string& filePath);
+    void Load(int id);
+
+    void SetTextureAllocator(ResourceAllocator<sf::Texture>* allocator);
 
     void LateUpdate(float deltaTime) override;
 
@@ -20,7 +24,7 @@ public:
 
 private:
 
-    sf::Texture texture;
+    ResourceAllocator<sf::Texture>* allocator;
     sf::Sprite sprite;
 
 };

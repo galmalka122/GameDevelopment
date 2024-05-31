@@ -1,7 +1,7 @@
 #include "SceneGame.h"
-#include "C_KeyboardMovement.h"
 
-SceneGame::SceneGame(WorkingDirectory &workingDir) : workingDir(workingDir)  { }
+SceneGame::SceneGame(WorkingDirectory &workingDir, ResourceAllocator<sf::Texture>& textureAllocator) :
+    workingDir(workingDir), textureAllocator(textureAllocator) { }
 
 void SceneGame::OnCreate() {
 
@@ -9,6 +9,7 @@ void SceneGame::OnCreate() {
 
     // This adds a C_Sprite component into our player.
     auto sprite = player->AddComponent<C_Sprite>();
+    sprite->SetTextureAllocator(&textureAllocator);
     sprite->Load(workingDir.Get() + "viking.png");
 
     // This adds a keyboard movement to the player.

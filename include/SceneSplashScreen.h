@@ -3,12 +3,14 @@
 
 #include "WorkingDirectory.h"
 #include "SceneStateMachine.h"
+#include "ResourceAllocator.h"
 
 class SceneSplashScreen : public Scene {
 
 public:
 
-    SceneSplashScreen(WorkingDirectory& workingDir, SceneStateMachine& sceneStateMachine, Window& window);
+    SceneSplashScreen(WorkingDirectory& workingDir, SceneStateMachine& sceneStateMachine, Window& window,
+                      ResourceAllocator<sf::Texture>& allocator);
 
     // Scene methods
     void OnCreate() override;
@@ -23,10 +25,10 @@ public:
 
 private:
 
-    sf::Texture splashTexture;
     sf::Sprite splashSprite;
 
     WorkingDirectory& workingDir;
+    ResourceAllocator<sf::Texture>& allocator;
     SceneStateMachine& sceneStateMachine;
     Window& window;
 

@@ -5,6 +5,7 @@
 #include "WorkingDirectory.h"
 #include "Input.h"
 #include "SceneStateMachine.h"
+#include "ResourceAllocator.h"
 
 class Game
 {
@@ -31,6 +32,7 @@ private:
 
 	Window window;
 
+    ResourceAllocator<sf::Texture> textureAllocator;
     WorkingDirectory workingDir;
 
     sf::Texture vikingTexture;
