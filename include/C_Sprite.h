@@ -16,6 +16,8 @@ public:
     void Load(int id);
 
     void SetTextureAllocator(ResourceAllocator<sf::Texture>* allocator);
+    void SetTextureRect(int x, int y, int width, int height);
+    void SetTextureRect(const sf::IntRect& rect);
 
     void LateUpdate(float deltaTime) override;
 
@@ -26,6 +28,8 @@ private:
 
     ResourceAllocator<sf::Texture>* allocator;
     sf::Sprite sprite;
+
+    int currentTextureID;
 
 };
 

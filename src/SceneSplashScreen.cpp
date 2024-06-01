@@ -4,6 +4,11 @@ SceneSplashScreen::SceneSplashScreen(WorkingDirectory &workingDir, SceneStateMac
     ResourceAllocator<sf::Texture>& allocator) : window(window), workingDir(workingDir), switchToState(0),
     sceneStateMachine(sceneStateMachine), currentSeconds(0.f), showForSeconds(3.f), allocator(allocator) { }
 
+void SceneSplashScreen::OnDestroy() { }
+void SceneSplashScreen::OnActivate() { currentSeconds = 0.f; }
+void SceneSplashScreen::Draw(Window &window) { window.Draw(splashSprite); }
+void SceneSplashScreen::SetSwitchToScene(unsigned int id) { switchToState = id; }
+
 void SceneSplashScreen::OnCreate() {
 
     int textureID = allocator.Add(workingDir.Get() + "that_games_guy_logo.png");
@@ -26,10 +31,6 @@ void SceneSplashScreen::OnCreate() {
         }
 }
 
-void SceneSplashScreen::OnDestroy() { }
-
-void SceneSplashScreen::OnActivate() { currentSeconds = 0.f; }
-
 void SceneSplashScreen::Update(float deltaTime) {
 
     currentSeconds += deltaTime;
@@ -40,6 +41,3 @@ void SceneSplashScreen::Update(float deltaTime) {
 
 }
 
-void SceneSplashScreen::Draw(Window &window) { window.Draw(splashSprite); }
-
-void SceneSplashScreen::SetSwitchToScene(unsigned int id) { switchToState = id; }

@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "C_Sprite.h"
 #include "C_KeyboardMovement.h"
+#include "C_Animation.h"
 #include "ResourceAllocator.h"
 #include "ObjectCollection.h"
 

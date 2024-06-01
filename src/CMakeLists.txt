@@ -13,4 +13,6 @@ target_sources(GameDevelopment PRIVATE	"main.cpp"
 										"C_KeyboardMovement.cpp"
 										"ResourceAllocator.cpp"
 										"ObjectCollection.cpp"
+										"Animation.cpp"
+										"C_Animation.cpp"
 )

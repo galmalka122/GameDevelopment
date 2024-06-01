@@ -51,14 +51,11 @@ public:
         static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
 
         for(auto existingComponent: components){
-
-            if(std::dynamic_pointer_cast<T>(existingComponent)){
-                return std::dynamic_pointer_cast<T>(existingComponent);
-            }
-
-            return nullptr;
-
+            if(std::dynamic_pointer_cast<T>(existingComponent)){ return std::dynamic_pointer_cast<T>(existingComponent); }
         }
+
+        return nullptr;
+
     }
 
     std::shared_ptr<C_Transform> transform;
