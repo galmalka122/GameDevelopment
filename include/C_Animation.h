@@ -27,6 +27,7 @@ public:
     void SetAnimationState(AnimationState state);
 
     const AnimationState& GetAnimationState() const;
+    void SetAnimationDirection(FacingDirection dir);
 
 private:
 

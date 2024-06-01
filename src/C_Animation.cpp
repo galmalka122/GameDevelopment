@@ -45,4 +45,8 @@ void C_Animation::SetAnimationState(AnimationState state) {
 
 }
 
+void C_Animation::SetAnimationDirection(FacingDirection dir) {
+    if(currentAnimation.first != AnimationState::None){ currentAnimation.second->SetDirection(dir); }
+}
+
 

@@ -21,15 +21,25 @@ struct FrameData {
 
 };
 
+enum class FacingDirection{
+
+    None,
+    Left,
+    Right,
+
+};
+
 class Animation {
 
 public:
 
-    Animation();
+    Animation(FacingDirection direction);
 
     void AddFrame(int textureID, int x, int y, int width, int height, float displayTimeSeconds);
+    void SetDirection(FacingDirection direction);
 
     const FrameData* GetCurrentFrame() const;
+    FacingDirection GetDirection() const;
 
     bool UpdateFrame(float deltaTime);
 
@@ -46,6 +56,8 @@ private:
 
     // This is to help determine when to switch to the next frame.
     float currentFrameTime;
+
+    FacingDirection direction;
 
 };
 
