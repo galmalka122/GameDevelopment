@@ -1,6 +1,7 @@
 #include "ObjectCollection.h"
 
 void ObjectCollection::Add(std::shared_ptr<Object> object) { newObjects.push_back(object); }
+void ObjectCollection::Draw(Window &window) { drawables.Draw(window); }
 
 void ObjectCollection::Update(float deltaTime) {
     for(auto& object : objects) { object->Update(deltaTime); }
@@ -8,10 +9,6 @@ void ObjectCollection::Update(float deltaTime) {
 
 void ObjectCollection::LateUpdate(float deltaTime) {
     for(auto& object : objects) { object->LateUpdate(deltaTime); }
-}
-
-void ObjectCollection::Draw(Window &window) {
-    for(auto& object : objects) { object->Draw(window); }
 }
 
 void ObjectCollection::ProcessNewObjects() {
@@ -23,7 +20,7 @@ void ObjectCollection::ProcessNewObjects() {
         for(const auto& object : newObjects) { object->Start(); }
 
         objects.insert(objects.end(), newObjects.begin(), newObjects.end());
-
+        drawables.Add(newObjects);
         newObjects.clear();
     }
 
@@ -41,6 +38,7 @@ void ObjectCollection::ProcessRemovals() {
 
     }
 
+    drawables.ProcessRemovals();
 }
 
 void ObjectCollection::Add(std::vector<std::shared_ptr<Object>> objects) {

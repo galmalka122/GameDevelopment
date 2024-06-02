@@ -4,8 +4,9 @@
 
 #include "Component.h"
 #include "ResourceAllocator.h"
+#include "C_Drawable.h"
 
-class C_Sprite : public Component{
+class C_Sprite : public Component, public C_Drawable {
 
 public:
 

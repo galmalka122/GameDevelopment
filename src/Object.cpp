@@ -2,6 +2,11 @@
 
 using shared_component = std::shared_ptr<Component>;
 
+void Object::QueueForRemoval() { queuedForRemoval = true; }
+bool Object::IsQueuedForRemoval() { return queuedForRemoval; }
+std::shared_ptr<C_Drawable> Object::GetDrawable() { return drawable; }
+void Object::Draw(Window &window) { drawable->Draw(window); }
+
 void Object::Awake() {
 
     for(const shared_component& component : components){
@@ -30,12 +35,6 @@ void Object::LateUpdate(float deltaTime) {
     }
 }
 
-void Object::Draw(Window &window) {
 
-    for(const shared_component& component : components){
-        component->Draw(window);
-    }
-}
 
-void Object::QueueForRemoval() { queuedForRemoval = true; }
-bool Object::IsQueuedForRemoval() { return queuedForRemoval; }
+

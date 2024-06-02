@@ -26,26 +26,11 @@ void Window::Update()
 	}
 }
 
-void Window::BeginDraw()
-{
-	// Clears the screen to a uniform colour(to remove previous frames).
-	window.clear(sf::Color::White);
-}
-
-void Window::Draw(const sf::Drawable& drawable)
-{
-	window.draw(drawable);
-}
-
-void Window::EndDraw()
-{
-	window.display();
-}
-
-bool Window::IsOpen() const
-{
-	return window.isOpen();
-}
+// Clears the screen to a uniform colour(to remove previous frames).
+void Window::BeginDraw() { window.clear(sf::Color::White); }
+void Window::Draw(const sf::Drawable& drawable) { window.draw(drawable); }
+void Window::EndDraw() { window.display(); }
+bool Window::IsOpen() const { return window.isOpen(); }
 
 sf::Vector2u Window::GetCenter() const
 {
@@ -54,8 +39,5 @@ sf::Vector2u Window::GetCenter() const
 
 };
 
-Window::~Window()
-{
-
-};
+Window::~Window() { };
 
