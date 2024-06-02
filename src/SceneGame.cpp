@@ -1,7 +1,7 @@
 #include "SceneGame.h"
 
-SceneGame::SceneGame(WorkingDirectory &workingDir, ResourceAllocator<sf::Texture>& textureAllocator) :
-    workingDir(workingDir), textureAllocator(textureAllocator) { }
+SceneGame::SceneGame(WorkingDirectory &workingDirectory, ResourceAllocator<sf::Texture>& textureAllocator) :
+    workingDir(workingDirectory), textureAllocator(textureAllocator), mapParser(textureAllocator, workingDirectory) { }
 
 void SceneGame::OnDestroy() {}
 void SceneGame::ProcessInput() { input.Update(); }
@@ -53,6 +53,12 @@ void SceneGame::OnCreate() {
     animation->AddAnimation(AnimationState::Walk, walkAnimation);
 
     objects.Add(player);
+
+    sf::Vector2i mapOffset(-480, 128);
+
+    std::vector<std::shared_ptr<Object>> levelTiles = mapParser.Parse(workingDir.Get() + "Test Map 1.tmx", mapOffset);
+
+    objects.Add(levelTiles);
 
 }
 

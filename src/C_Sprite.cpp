@@ -35,6 +35,8 @@ void C_Sprite::Load(int id) {
     }
 }
 
+void C_Sprite::SetScale(float x, float y) { sprite.setScale(x, y); }
+
 
 
 

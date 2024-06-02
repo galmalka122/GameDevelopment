@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <iostream>
 
 template <class T>
 class ResourceAllocator {
@@ -20,7 +21,10 @@ public:
 
         // Check if the path is a valid resource.
         std::shared_ptr<T> resource = std::make_shared<T>();
-        if(!resource->loadFromFile(filePath)) { return 1; }
+        if(!resource->loadFromFile(filePath)) {
+            std::cout << filePath << " not found!!\n";
+
+            return 1; }
 
         // Add the resource to the resources' container.
         resources.insert(std::make_pair(filePath, std::make_pair(currentID, resource)));

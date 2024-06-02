@@ -22,7 +22,7 @@ void ObjectCollection::ProcessNewObjects() {
         for(const auto& object : newObjects) { object->Awake(); }
         for(const auto& object : newObjects) { object->Start(); }
 
-        objects.assign(newObjects.begin(), newObjects.end());
+        objects.insert(objects.end(), newObjects.begin(), newObjects.end());
 
         newObjects.clear();
     }
@@ -41,4 +41,8 @@ void ObjectCollection::ProcessRemovals() {
 
     }
 
+}
+
+void ObjectCollection::Add(std::vector<std::shared_ptr<Object>> objects) {
+    newObjects.insert(newObjects.end(), objects.begin(), objects.end());
 }

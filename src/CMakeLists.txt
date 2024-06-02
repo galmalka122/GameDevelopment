@@ -15,4 +15,6 @@ target_sources(GameDevelopment PRIVATE	"main.cpp"
 										"ObjectCollection.cpp"
 										"Animation.cpp"
 										"C_Animation.cpp"
+										"Tile.cpp"
+										"TileMapParser.cpp"
 )

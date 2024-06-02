@@ -18,6 +18,7 @@ public:
     void SetTextureAllocator(ResourceAllocator<sf::Texture>* allocator);
     void SetTextureRect(int x, int y, int width, int height);
     void SetTextureRect(const sf::IntRect& rect);
+    void SetScale(float x, float y);
 
     void LateUpdate(float deltaTime) override;
 
