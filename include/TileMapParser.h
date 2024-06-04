@@ -25,10 +25,16 @@ struct TileSheetData{
 
 };
 
-using Layer = std::vector<std::shared_ptr<Tile>>;
+struct Layer{
+
+    std::vector<std::shared_ptr<Tile>> tiles;
+    bool isVisible;
+};
+
 using MapTiles = std::map<std::string, std::shared_ptr<Layer>>;
 using TileSet = std::unordered_map<unsigned int, std::shared_ptr<TileInfo>>;
 using TileSheets = std::map<int, std::shared_ptr<TileSheetData>>;
+
 
 
 class TileMapParser {

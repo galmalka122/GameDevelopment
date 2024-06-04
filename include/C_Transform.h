@@ -18,11 +18,15 @@ public:
     void SetX(float x);
     void SetY(float y);
 
+    void SetStatic(bool isStatic);
+    bool IsStatic() const;
+
     [[nodiscard]] const sf::Vector2f& GetPosition() const;
 
 private:
 
     sf::Vector2f position;
+    bool isStatic;
 
 };
 

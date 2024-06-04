@@ -28,7 +28,7 @@ void S_Drawable::Add(std::shared_ptr<Object> object) {
 
     std::shared_ptr<C_Drawable> drawable = object->GetDrawable();
 
-    if(drawable != nullptr){ drawables.emplace_back(object); }
+    if(drawable){ drawables.emplace_back(object); }
 }
 
 void S_Drawable::Sort() {

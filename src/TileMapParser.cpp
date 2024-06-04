@@ -19,7 +19,7 @@ std::vector<std::shared_ptr<Object>> TileMapParser::Parse(const std::string &fil
     doc.parse<0>(xmlFile.data());
     xml_node<>* rootNode = doc.first_node("map");
 
-    std::shared_ptr<MapTiles> tiles = BuildMapTiles(rootNode);
+    std::shared_ptr<MapTiles> map = BuildMapTiles(rootNode);
 
     int tileSizeX = std::atoi(rootNode->first_attribute("tilewidth")->value());
     int tileSizeY = std::atoi(rootNode->first_attribute("tileheight")->value());
@@ -28,11 +28,11 @@ std::vector<std::shared_ptr<Object>> TileMapParser::Parse(const std::string &fil
 
     std::vector<std::shared_ptr<Object>> tileObjects;
 
-    int layerCount = tiles->size() - 1;
+    int layerCount = map->size() - 1;
 
-    for(const auto& layer: *tiles){
+    for(const auto layer : *map){
 
-        for(const auto& tile : *layer.second){
+        for(const auto tile : layer.second->tiles){
 
             std::shared_ptr<TileInfo> tileInfo = tile->properties;
 
@@ -40,12 +40,17 @@ std::vector<std::shared_ptr<Object>> TileMapParser::Parse(const std::string &fil
 
             const unsigned int tileScale = 3;
 
+            if(layer.second->isVisible){
+
             auto sprite = tileObject->AddComponent<C_Sprite>();
             sprite->SetTextureAllocator(&textureAllocator);
             sprite->Load(tileInfo->textureID);
             sprite->SetTextureRect(tileInfo->textureRect);
             sprite->SetScale(tileScale, tileScale);
             sprite->SetOrder(layerCount);
+
+            }
+
             float x = tile->x * tileSizeX * tileScale + offset.x;
             float y = tile->y * tileSizeY * tileScale + offset.y;
             tileObject->transform->SetPosition(x, y);
@@ -53,7 +58,7 @@ std::vector<std::shared_ptr<Object>> TileMapParser::Parse(const std::string &fil
             tileObjects.emplace_back(tileObject);
 
         }
-        --layerCount;
+        layerCount--;
     }
 
     return tileObjects;
@@ -168,7 +173,10 @@ TileMapParser::BuildLayer(xml_node<> *layerNode, std::shared_ptr<TileSheets> til
                 int textureX = tileId % tileSheetData->columns - 1;
                 int textureY = tileId / tileSheetData->columns;
 
-                std::shared_ptr<TileInfo> tileInfo = std::make_shared<TileInfo>(tileSheetData->textureID, tileId, sf::IntRect(textureX * tileSheetData->tileSize.x, textureY * tileSheetData->tileSize.y, tileSheetData->tileSize.x, tileSheetData->tileSize.y));
+                std::shared_ptr<TileInfo> tileInfo = std::make_shared<TileInfo>(tileSheetData->textureID, tileId,
+                                                sf::IntRect(textureX * tileSheetData->tileSize.x,
+                                                    textureY * tileSheetData->tileSize.y,
+                                                tileSheetData->tileSize.x, tileSheetData->tileSize.y));
 
                 itr = tileSet.insert(std::make_pair(tileId, tileInfo)).first;
             }
@@ -181,12 +189,20 @@ TileMapParser::BuildLayer(xml_node<> *layerNode, std::shared_ptr<TileSheets> til
             tile->y = count / width;
 
 
-            layer->emplace_back(tile);
+            layer->tiles.emplace_back(tile);
         }
 
         count++;
     }
 
     const std::string layerName = layerNode->first_attribute("name")->value();
+    bool layerVisibility = true;
+    xml_attribute<>* visibilityAttribute = layerNode->first_attribute("visible");
+
+    if(visibilityAttribute) {
+        layerVisibility = std::stoi(visibilityAttribute->value());
+    }
+    layer->isVisible = layerVisibility;
+
     return std::make_pair(layerName, layer);
 }
