@@ -8,12 +8,13 @@
 #include "Component.h"
 #include "C_Transform.h"
 #include "C_Drawable.h"
+#include "C_InstanceID.h"
 
 class Object{
 
 public:
 
-    Object() : queuedForRemoval(false) { transform = AddComponent<C_Transform>(); }
+    Object();
 
     // Called when the object is created.
     void Awake();
@@ -66,6 +67,7 @@ public:
     std::shared_ptr<C_Drawable> GetDrawable();
 
     std::shared_ptr<C_Transform> transform;
+    std::shared_ptr<C_InstanceID> instanceID;
 
 private:
 

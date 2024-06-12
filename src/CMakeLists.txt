@@ -22,4 +22,6 @@ target_sources(GameDevelopment PRIVATE
 		"TileMapParser.cpp"
 		"Window.cpp"
 		"WorkingDirectory.cpp"
+		"C_InstanceID.cpp"
+		"QuadTree.cpp"
 )

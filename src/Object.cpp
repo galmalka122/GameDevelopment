@@ -2,6 +2,11 @@
 
 using shared_component = std::shared_ptr<Component>;
 
+Object::Object() : queuedForRemoval(false) {
+    transform = AddComponent<C_Transform>();
+    instanceID = AddComponent<C_InstanceID>();
+}
+
 void Object::QueueForRemoval() { queuedForRemoval = true; }
 bool Object::IsQueuedForRemoval() { return queuedForRemoval; }
 std::shared_ptr<C_Drawable> Object::GetDrawable() { return drawable; }

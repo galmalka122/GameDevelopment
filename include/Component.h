@@ -18,9 +18,11 @@ public:
     virtual void LateUpdate(float deltaTime) { };
     virtual void Draw(Window& window) { };
 
+    Object* owner;
+
 protected:
 
-    Object* owner;
+
 
 };
 

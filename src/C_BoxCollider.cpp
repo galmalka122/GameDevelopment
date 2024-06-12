@@ -2,7 +2,10 @@
 #include "C_BoxCollider.h"
 #include "Object.h"
 
+C_BoxCollider::C_BoxCollider(Object *owner) : C_Collider(owner), offset(sf::Vector2f(0.f, 0.f)) { }
+
 Manifold C_BoxCollider::Intersects(std::shared_ptr<C_Collider> other) {
+
     Manifold m;
     m.colliding = false;
 
@@ -23,6 +26,7 @@ Manifold C_BoxCollider::Intersects(std::shared_ptr<C_Collider> other) {
 }
 
 void C_BoxCollider::ResolveOverlap(const Manifold &manifold) {
+
     auto transform = owner->transform;
 
     if(transform->IsStatic()){
@@ -30,7 +34,7 @@ void C_BoxCollider::ResolveOverlap(const Manifold &manifold) {
         const sf::FloatRect& rect1 = GetCollidable();
         const sf::FloatRect* rect2 = manifold.other;
 
-        float resolve = 8;
+        float resolve = 8.f;
 
         float xDiff = (rect1.left + (rect1.width * 0.5f)) - (rect2->left + (rect2->width * 0.5f));
         float yDiff = (rect1.top + (rect1.height * 0.5f)) - (rect2->top + (rect2->height * 0.5f));
@@ -42,6 +46,7 @@ void C_BoxCollider::ResolveOverlap(const Manifold &manifold) {
 
             transform->AddPosition(resolve, 0);
         }
+
         else{
 
             if(yDiff > 0){ resolve = -((rect2->top + rect2->height) - rect1.top); }
@@ -49,27 +54,23 @@ void C_BoxCollider::ResolveOverlap(const Manifold &manifold) {
 
             transform->AddPosition(0, resolve);
         }
-
-
-
-
     }
-
 }
 
-C_BoxCollider::C_BoxCollider(Object *owner) : C_Collider(owner), offset(sf::Vector2f(0.f, 0.f)) { }
-
 void C_BoxCollider::setCollidable(const sf::FloatRect& rect) {
+
     AABB = rect;
     SetPosition();
 }
 
 const sf::FloatRect &C_BoxCollider::GetCollidable() {
+
     SetPosition();
     return AABB;
 }
 
 void C_BoxCollider::SetPosition() {
+
     const sf::Vector2f& pos = owner->transform->GetPosition();
 
     AABB.left = pos.x - (AABB.width / 2) + offset.x;
