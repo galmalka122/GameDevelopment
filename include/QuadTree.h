@@ -18,13 +18,15 @@ public:
     void Remove(std::shared_ptr<C_BoxCollider> object);
     void Clear();
 
+    std::vector<std::shared_ptr<C_BoxCollider>> Search(const sf::FloatRect& area);
+
 private:
 
-    void Search(const sf::FloatRect& area, std::vector<std::shared_ptr<C_BoxCollider>>& overlappingObjects);
-
+    const sf::FloatRect& GetBounds() const;
     int GetChildIndexForObject(const sf::FloatRect& objectBounds);
 
     void Split();
+    void Search(const sf::FloatRect& area, std::vector<std::shared_ptr<C_BoxCollider>>& overlappingObjects);
 
     static const int thisTree = -1;
     static const int childNE = 0;

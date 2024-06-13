@@ -13,6 +13,7 @@ public:
     int Get() const;
 
 private:
+
     static int count;
     int id;
 
