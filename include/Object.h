@@ -27,7 +27,7 @@ public:
     void Draw(Window& window);
 
     bool IsQueuedForRemoval();
-    void QueueForRemoval();
+    [[maybe_unused]] void QueueForRemoval();
 
     template<class T> std::shared_ptr<T> AddComponent(){
 
@@ -54,14 +54,12 @@ public:
 
     template<class T> std::shared_ptr<T> GetComponent(){
 
-        static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
-
-        for(auto existingComponent: components){
-            if(std::dynamic_pointer_cast<T>(existingComponent)){ return std::dynamic_pointer_cast<T>(existingComponent); }
+        for(auto& existingComponent: components){
+            if(std::dynamic_pointer_cast<T>(existingComponent)){
+                return std::dynamic_pointer_cast<T>(existingComponent);
+            }
         }
-
         return nullptr;
-
     }
 
     std::shared_ptr<C_Drawable> GetDrawable();

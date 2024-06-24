@@ -1,6 +1,7 @@
 #include "Bitmask.h"
 
 Bitmask::Bitmask() : bits(0) {}
+Bitmask::Bitmask(uint32_t bits) : bits(bits) { }
 
 void Bitmask::SetMask(Bitmask &other) {
 
@@ -47,3 +48,4 @@ void Bitmask::Clear() {
     bits = 0;
 
 }
+

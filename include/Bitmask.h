@@ -9,7 +9,7 @@ class Bitmask {
 public:
 
     Bitmask();
-
+    explicit Bitmask(uint32_t bits);
     // Overwrite this bitmask
     void SetMask(Bitmask& other);
 

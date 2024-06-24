@@ -17,7 +17,7 @@ enum class CollisionLayer{
 struct Manifold{
 
     bool colliding = false;
-    const sf::FloatRect* other;
+    sf::FloatRect other;
 
 };
 
@@ -25,17 +25,18 @@ class C_Collider : public Component{
 
 public:
 
-    C_Collider(Object* owner);
-    ~C_Collider();
+    explicit C_Collider(Object* owner);
+    ~C_Collider() = default;
 
     virtual Manifold Intersects(std::shared_ptr<C_Collider> other) = 0;
     virtual void ResolveOverlap(const Manifold& manifold) = 0;
 
-    bool IsTrigger() const;
-    void SetTrigger(bool isTriggered);
+    [[maybe_unused]] [[nodiscard]] bool IsTrigger() const;
 
-    CollisionLayer GetLayer() const;
-    void SetCollisionLayer(CollisionLayer layer);
+    [[maybe_unused]] void SetTrigger(bool isTriggered);
+
+    [[nodiscard]] CollisionLayer GetLayer() const;
+    void SetLayer(CollisionLayer layer);
 
 private:
 

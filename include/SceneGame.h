@@ -3,8 +3,10 @@
 
 #include "Scene.h"
 #include "Input.h"
+#include "Debug.h"
 #include "WorkingDirectory.h"
 #include "Object.h"
+#include "C_Camera.h"
 #include "C_Sprite.h"
 #include "C_KeyboardMovement.h"
 #include "C_Animation.h"
@@ -16,7 +18,7 @@ class SceneGame : public Scene{
 
 public:
 
-    SceneGame(WorkingDirectory& workingDir, ResourceAllocator<sf::Texture>& textureAllocator);
+    SceneGame(WorkingDirectory& workingDir, ResourceAllocator<sf::Texture>& textureAllocator, Window& window);
 
     void OnCreate() override;
     void OnDestroy() override;
@@ -32,6 +34,7 @@ private:
 
     TileMapParser mapParser;
 
+    Window& window;
     WorkingDirectory& workingDir;
     ResourceAllocator<sf::Texture>& textureAllocator;
     Input input;

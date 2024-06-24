@@ -7,7 +7,7 @@ Object::Object() : queuedForRemoval(false) {
     instanceID = AddComponent<C_InstanceID>();
 }
 
-void Object::QueueForRemoval() { queuedForRemoval = true; }
+[[maybe_unused]] void Object::QueueForRemoval() { queuedForRemoval = true; }
 bool Object::IsQueuedForRemoval() { return queuedForRemoval; }
 std::shared_ptr<C_Drawable> Object::GetDrawable() { return drawable; }
 void Object::Draw(Window &window) { drawable->Draw(window); }

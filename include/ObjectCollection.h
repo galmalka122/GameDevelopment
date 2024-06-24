@@ -6,12 +6,13 @@
 
 #include "Object.h"
 #include "S_Drawable.h"
+#include "S_Collidable.h"
 
 class ObjectCollection {
 
 public:
 
-    void Add(std::shared_ptr<Object> object);
+    void Add(std::shared_ptr<Object> &object);
     void Add(std::vector<std::shared_ptr<Object>>& objects);
 
     void Update(float deltaTime);
@@ -26,7 +27,7 @@ private:
     std::vector<std::shared_ptr<Object>> objects;
     std::vector<std::shared_ptr<Object>> newObjects;
     S_Drawable drawables;
-
+    S_Collidable collidables;
 };
 
 

@@ -23,6 +23,8 @@ public:
 
     void LateUpdate(float deltaTime) override;
 
+    bool ContinueToDraw() const override;
+
     // Draws the sprite to the screen.
     void Draw(Window& window) override;
 

@@ -15,7 +15,9 @@ public:
         Right,
         Up,
         Down,
-        Esc
+        Esc,
+        LBracket,
+        RBracket
 
     };
 

@@ -9,7 +9,7 @@ Game::Game() : window("First Look") {
     std::shared_ptr<SceneSplashScreen> splashScreen = std::make_shared<SceneSplashScreen>(workingDir, sceneManager,
                                                                                           window, textureAllocator);
 
-    std::shared_ptr<SceneGame> sceneGame = std::make_shared<SceneGame>(workingDir, textureAllocator);
+    std::shared_ptr<SceneGame> sceneGame = std::make_shared<SceneGame>(workingDir, textureAllocator, window);
 
     unsigned int splashScreenID = sceneManager.Add(splashScreen);
     unsigned int gameSceneID = sceneManager.Add(sceneGame);
@@ -25,7 +25,7 @@ Game::Game() : window("First Look") {
 
 /****************************************************************************
 *             This method is where we put all the game logic.               *
-/****************************************************************************/
+*****************************************************************************/
 void Game::Update()
 {
 

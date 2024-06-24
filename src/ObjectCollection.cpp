@@ -1,15 +1,17 @@
 #include "ObjectCollection.h"
 
-void ObjectCollection::Add(std::shared_ptr<Object> object) { newObjects.push_back(object); }
+void ObjectCollection::Add(std::shared_ptr<Object> &object) { newObjects.push_back(object); }
 
-void ObjectCollection::Add(std::vector<std::shared_ptr<Object>>& objects) {
-    newObjects.insert(newObjects.end(), objects.begin(), objects.end());
+void ObjectCollection::Add(std::vector<std::shared_ptr<Object>>& o) {
+    newObjects.insert(newObjects.end(), o.begin(), o.end());
 }
 
 void ObjectCollection::Draw(Window &window) { drawables.Draw(window); }
 
 void ObjectCollection::Update(float deltaTime) {
     for(const auto& object : objects) { object->Update(deltaTime); }
+
+    collidables.Update();
 }
 
 void ObjectCollection::LateUpdate(float deltaTime) {
@@ -26,23 +28,31 @@ void ObjectCollection::ProcessNewObjects() {
 
         objects.insert(objects.end(), newObjects.begin(), newObjects.end());
         drawables.Add(newObjects);
+        collidables.Add(newObjects);
         newObjects.clear();
     }
+
 
 }
 
 void ObjectCollection::ProcessRemovals() {
 
-    auto it = objects.begin();
-    while(it != objects.end()){
+    bool removed = false;
+    auto objIterator = objects.begin();
 
-        auto obj = *it;
+    while(objIterator != objects.end()){
+        auto obj = *objIterator;
 
-        if(obj->IsQueuedForRemoval()) { it = objects.erase(it); }
-        else { ++it; }
+        if(obj->IsQueuedForRemoval()) {
+            objIterator = objects.erase(objIterator);
+            removed = true;
+        }
+        else { ++objIterator; }
 
     }
-
-    drawables.ProcessRemovals();
+    if(removed) {
+        drawables.ProcessRemovals();
+        collidables.ProcessRemovals();
+    }
 }
 

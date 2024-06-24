@@ -1,12 +1,21 @@
 #include "SceneGame.h"
 
-SceneGame::SceneGame(WorkingDirectory &workingDirectory, ResourceAllocator<sf::Texture>& textureAllocator) :
-    workingDir(workingDirectory), textureAllocator(textureAllocator), mapParser(textureAllocator, workingDirectory) { }
+SceneGame::SceneGame(WorkingDirectory &workingDirectory, ResourceAllocator<sf::Texture>& textureAllocator, Window& window) :
+    workingDir(workingDirectory), textureAllocator(textureAllocator), mapParser(textureAllocator, workingDirectory),
+    window(window) { }
 
 void SceneGame::OnDestroy() {}
 void SceneGame::ProcessInput() { input.Update(); }
-void SceneGame::Draw(Window &window) { objects.Draw(window); }
 void SceneGame::LateUpdate(float deltaTime) { objects.LateUpdate(deltaTime); }
+
+void SceneGame::Draw(Window &window)
+{
+    objects.Draw(window);
+
+#ifdef DEBUG
+    Debug::Draw(window);
+#endif
+}
 
 void SceneGame::OnCreate() {
 
@@ -15,6 +24,7 @@ void SceneGame::OnCreate() {
     // This adds a C_Sprite component into our player.
     auto sprite = player->AddComponent<C_Sprite>();
     sprite->SetTextureAllocator(&textureAllocator);
+    sprite->SetDrawLayer(DrawLayer::Entities);
 
     // This adds a keyboard movement to the player.
     auto movement = player->AddComponent<C_KeyboardMovement>();
@@ -22,35 +32,82 @@ void SceneGame::OnCreate() {
 
     // Initialize the animation component.
     std::shared_ptr<C_Animation> animation = player->AddComponent<C_Animation>();
-    int vikingTextureID = textureAllocator.Add(workingDir.Get() + "viking.png");
+    int playerTextureID = textureAllocator.Add(workingDir.Get() + "Player.png");
 
     // Define the animation's settings manually, later it will be read from a json/xml file.
-    const int frameWidth = 165;
-    const int frameHeight = 145;
+    const int frameWidth = 64;
+    const int frameHeight = 64;
+    const int upYFramePos = 512;
+    const int leftYFramePos = 576;
+    const int downYFramePos = 640;
+    const int rightYFramePos = 704;
+
     const float idleAnimationFrameSeconds = 0.2f;
 
-    std::shared_ptr<Animation> idleAnimation = std::make_shared<Animation>(FacingDirection::Right);
+    std::map<FacingDirection, std::shared_ptr<Animation>> idleAnimations;
+    std::shared_ptr<Animation> idleUpAnimation = std::make_shared<Animation>();
+    idleUpAnimation->AddFrame(playerTextureID, 0, upYFramePos, frameWidth, frameHeight, 0.f);
+    idleAnimations.insert(std::make_pair(FacingDirection::Up, idleUpAnimation));
 
-    // Adds 4 idle animation frames, all same width and height, but with different positions on the sprite.
-    idleAnimation->AddFrame(vikingTextureID, 600, 0, frameWidth, frameHeight, idleAnimationFrameSeconds);
-    idleAnimation->AddFrame(vikingTextureID, 800, 0, frameWidth, frameHeight, idleAnimationFrameSeconds);
-    idleAnimation->AddFrame(vikingTextureID, 0, 145, frameWidth, frameHeight, idleAnimationFrameSeconds);
-    idleAnimation->AddFrame(vikingTextureID, 200, 145, frameWidth, frameHeight, idleAnimationFrameSeconds);
+    std::shared_ptr<Animation> idleDownAnimation = std::make_shared<Animation>();
+    idleDownAnimation->AddFrame(playerTextureID, 0, downYFramePos, frameWidth, frameHeight, 0.f);
+    idleAnimations.insert(std::make_pair(FacingDirection::Down, idleDownAnimation));
 
-    animation->AddAnimation(AnimationState::Idle, idleAnimation);
+    std::shared_ptr<Animation> idleLeftAnimation = std::make_shared<Animation>();
+    idleLeftAnimation->AddFrame(playerTextureID, 0, leftYFramePos, frameWidth, frameHeight, 0.f);
+    idleAnimations.insert(std::make_pair(FacingDirection::Left, idleLeftAnimation));
 
-    std::shared_ptr<Animation> walkAnimation = std::make_shared<Animation>(FacingDirection::Right);
+    std::shared_ptr<Animation> idleRightAnimation = std::make_shared<Animation>();
+    idleRightAnimation->AddFrame(playerTextureID, 0, rightYFramePos, frameWidth, frameHeight, 0.f);
+    idleAnimations.insert(std::make_pair(FacingDirection::Right, idleRightAnimation));
 
-    const float walkAnimationFrameSeconds = 0.15f;
+    animation->AddAnimation(AnimationState::Idle, idleAnimations);
 
-    // Adds 4 idle animation frames, all same width and height, but with different positions on the sprite.
-    walkAnimation->AddFrame(vikingTextureID, 600, 290, frameWidth, frameHeight, walkAnimationFrameSeconds);
-    walkAnimation->AddFrame(vikingTextureID, 800, 290, frameWidth, frameHeight, walkAnimationFrameSeconds);
-    walkAnimation->AddFrame(vikingTextureID, 0, 435, frameWidth, frameHeight, walkAnimationFrameSeconds);
-    walkAnimation->AddFrame(vikingTextureID, 200, 435, frameWidth, frameHeight, walkAnimationFrameSeconds);
-    walkAnimation->AddFrame(vikingTextureID, 400, 435, frameWidth, frameHeight, walkAnimationFrameSeconds);
+    std::shared_ptr<Animation> walkAnimation = std::make_shared<Animation>();
 
-    animation->AddAnimation(AnimationState::Walk, walkAnimation);
+    const int walkingFrameCount = 9;
+    const float delayBetweenWalkingFramesSecs = 0.1f;
+
+    std::map<FacingDirection, std::shared_ptr<Animation>> walkingAnimations;
+    std::shared_ptr<Animation> walkUpAnimation = std::make_shared<Animation>();
+
+    for (int i = 0; i < walkingFrameCount; ++i) {
+        walkUpAnimation->AddFrame(playerTextureID, i * frameWidth, upYFramePos, frameWidth, frameHeight, delayBetweenWalkingFramesSecs);
+    }
+    walkingAnimations.insert(std::make_pair(FacingDirection::Up, walkUpAnimation));
+
+    std::shared_ptr<Animation> walkDownAnimation = std::make_shared<Animation>();
+
+    for (int i = 0; i < walkingFrameCount; ++i) {
+        walkDownAnimation->AddFrame(playerTextureID, i * frameWidth, downYFramePos, frameWidth, frameHeight, delayBetweenWalkingFramesSecs);
+    }
+    walkingAnimations.insert(std::make_pair(FacingDirection::Down, walkDownAnimation));
+
+    std::shared_ptr<Animation> walkLeftAnimation = std::make_shared<Animation>();
+
+    for (int i = 0; i < walkingFrameCount; ++i) {
+        walkLeftAnimation->AddFrame(playerTextureID, i * frameWidth, leftYFramePos, frameWidth, frameHeight, delayBetweenWalkingFramesSecs);
+    }
+    walkingAnimations.insert(std::make_pair(FacingDirection::Left, walkLeftAnimation));
+
+    std::shared_ptr<Animation> walkRightAnimation = std::make_shared<Animation>();
+
+    for (int i = 0; i < walkingFrameCount; ++i) {
+        walkRightAnimation->AddFrame(playerTextureID, i * frameWidth, rightYFramePos, frameWidth, frameHeight, delayBetweenWalkingFramesSecs);
+    }
+    walkingAnimations.insert(std::make_pair(FacingDirection::Right, walkRightAnimation));
+
+    animation->AddAnimation(AnimationState::Walk, walkingAnimations);
+
+    player->transform->SetPosition(100,700);
+
+    auto collider = player->AddComponent<C_BoxCollider>();
+    collider->SetSize(frameHeight * 0.4f, frameHeight * 0.5f);
+    collider->SetOffset(0.f, 14.f);
+    collider->SetLayer(CollisionLayer::Player);
+
+    auto camera = player->AddComponent<C_Camera>();
+    camera->SetWindow(&window);
 
     objects.Add(player);
 
@@ -68,6 +125,8 @@ void SceneGame::Update(float deltaTime) {
     objects.ProcessNewObjects();
 
     objects.Update(deltaTime);
+
+    Debug::HandleCameraZoom(window, input);
 
 }
 

@@ -22,10 +22,14 @@ public:
     bool IsStatic() const;
 
     [[nodiscard]] const sf::Vector2f& GetPosition() const;
+    const sf::Vector2f& GetPreviousFramePosition() const { return previewsFramePosition; }
+
+    void LateUpdate(float deltaTime) override;;
 
 private:
 
     sf::Vector2f position;
+    sf::Vector2f previewsFramePosition;
     bool isStatic;
 
 };

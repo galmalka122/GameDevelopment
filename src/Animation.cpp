@@ -1,12 +1,11 @@
+#include <cstdint>
 #include "Animation.h"
 
-Animation::Animation(FacingDirection direction) : frames(0), currentFrameIndex(0), currentFrameTime(0.f), direction(direction) { }
+Animation::Animation() : frames(0), currentFrameIndex(0), currentFrameTime(0.f), realeaseFirstFrame(true) { }
 
-void Animation::Reset() { currentFrameIndex = 0, currentFrameTime = 0.f; }
+void Animation::Reset() { currentFrameIndex = 0, currentFrameTime = 0.f, realeaseFirstFrame = true; }
 
 void Animation::IncrementFrame() { currentFrameIndex = (currentFrameIndex + 1) % frames.size(); }
-
-FacingDirection Animation::GetDirection() const { return direction; }
 
 void Animation::AddFrame(int textureID, int x, int y, int width, int height, float displayTimeSeconds) {
 
@@ -15,41 +14,29 @@ void Animation::AddFrame(int textureID, int x, int y, int width, int height, flo
     frames.push_back(frameData);
 }
 
-const FrameData *Animation::GetCurrentFrame() const {
-
-    if(!frames.empty()) { return &frames[currentFrameIndex]; }
-
-    return nullptr;
+const FrameData *Animation::GetCurrentFrame() const
+{
+    if(frames.empty()) return nullptr;
+    return &frames[currentFrameIndex];
 }
 
-bool Animation::UpdateFrame(float deltaTime) {
+bool Animation::UpdateFrame(float deltaTime)
+{
+    if(realeaseFirstFrame)
+    {
+        realeaseFirstFrame = false;
+        return true;
+    }
 
-    if(!frames.empty()) {
-
+    if (frames.size() > 1)
+    {
         currentFrameTime += deltaTime;
-
-        if(currentFrameTime >= frames[currentFrameIndex].displayTimeSeconds){
-
+        if (currentFrameTime >= frames[currentFrameIndex].displayTimeSeconds) {
             currentFrameTime = 0.f;
             IncrementFrame();
             return true;
-
         }
     }
-
     return false;
-}
-
-void Animation::SetDirection(FacingDirection dir) {
-
-    if(direction != dir){
-
-        direction = dir;
-        for (auto& frame : frames){
-            // Flips the sprite
-            frame.x += frame.width;
-            frame.width *= -1;
-        }
-    }
 }
 

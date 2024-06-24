@@ -11,16 +11,17 @@
 #include "Utilities.h"
 #include "Object.h"
 #include "C_Sprite.h"
+#include "C_BoxCollider.h"
 #include "WorkingDirectory.h"
 
 using namespace rapidxml;
 
 struct TileSheetData{
 
-    int textureID;
+    int textureID{};
     sf::Vector2i imageSize;
-    int columns;
-    int rows;
+    int columns{};
+    [[maybe_unused]] int rows{};
     sf::Vector2u tileSize;
 
 };
@@ -49,7 +50,7 @@ private:
 
     std::shared_ptr<TileSheets> BuildTileSheetData(xml_node<>* rootNode);
     std::shared_ptr<MapTiles> BuildMapTiles(xml_node<>* rootNode);
-    std::pair<std::string, std::shared_ptr<Layer>> BuildLayer(xml_node<>* layerNode, std::shared_ptr<TileSheets> tileSheets);
+    static std::pair<std::string, std::shared_ptr<Layer>> BuildLayer(xml_node<>* layerNode, const std::shared_ptr<TileSheets>& tileSheets);
 
 
     ResourceAllocator<sf::Texture>& textureAllocator;

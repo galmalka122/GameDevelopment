@@ -26,6 +26,8 @@ enum class FacingDirection{
     None,
     Left,
     Right,
+    Up,
+    Down
 
 };
 
@@ -33,13 +35,11 @@ class Animation {
 
 public:
 
-    Animation(FacingDirection direction);
+    Animation();
 
     void AddFrame(int textureID, int x, int y, int width, int height, float displayTimeSeconds);
-    void SetDirection(FacingDirection direction);
 
     const FrameData* GetCurrentFrame() const;
-    FacingDirection GetDirection() const;
 
     bool UpdateFrame(float deltaTime);
 
@@ -57,7 +57,7 @@ private:
     // This is to help determine when to switch to the next frame.
     float currentFrameTime;
 
-    FacingDirection direction;
+    bool realeaseFirstFrame;
 
 };
 
