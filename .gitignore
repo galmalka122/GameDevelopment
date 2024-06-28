@@ -2,9 +2,15 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/App.exe
+################################################################################
+#                  Microsoft(R) Visual Studio is amazing!
+################################################################################
+
+
 /.vs
 /.idea
 /CMakePresets.json
-/out/build/x64-debug
+/out
 /cmake-build-debug
+/.fleet
+/.cache

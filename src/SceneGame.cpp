@@ -113,7 +113,7 @@ void SceneGame::OnCreate() {
 
     sf::Vector2i mapOffset(-480, 128);
 
-    std::vector<std::shared_ptr<Object>> levelTiles = mapParser.Parse(workingDir.Get() + "Test Map 1.tmx", mapOffset);
+    std::vector<std::shared_ptr<Object>> levelTiles = mapParser.Parse(workingDir.Get() + "House Exterior.tmx", mapOffset);
 
     objects.Add(levelTiles);
 

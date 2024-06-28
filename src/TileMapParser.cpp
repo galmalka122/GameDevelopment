@@ -112,10 +112,10 @@ std::shared_ptr<MapTiles> TileMapParser::BuildMapTiles(xml_node<> *rootNode) {
     std::shared_ptr<TileSheets> tileSheetData = BuildTileSheetData(rootNode);
     std::shared_ptr<MapTiles> map = std::make_shared<MapTiles>();
 
-    for(xml_node<>* node = rootNode->first_node("layer"); node; node = node->next_sibling()){
+    for(xml_node<>* node = rootNode->last_node("layer"); node; node = node->previous_sibling("layer")){
 
         std::pair<std::string, std::shared_ptr<Layer>> mapLayer = BuildLayer(node, tileSheetData);
-        map->emplace(mapLayer);
+        map->emplace_back(mapLayer);
     }
 
     return map;
@@ -166,11 +166,12 @@ TileMapParser::BuildLayer(xml_node<> *layerNode, const std::shared_ptr<TileSheet
             if (itr == tileSet.end())
             {
                 std::shared_ptr<TileSheetData> tileSheetData;
+                int firstID = 0;
 
                 for(auto iter = tileSheets->rbegin(); iter != tileSheets->rend(); ++iter){
 
                     if(tileId >= iter->first){
-
+                        firstID = iter->first;
                         tileSheetData = iter->second;
                         break;
 
@@ -183,13 +184,21 @@ TileMapParser::BuildLayer(xml_node<> *layerNode, const std::shared_ptr<TileSheet
                     continue;
                 }
 
-                int textureX = tileId % tileSheetData->columns - 1;
-                int textureY = tileId / tileSheetData->columns;
+                int textureX = (tileId - firstID) % tileSheetData->columns;
+                int textureY = (tileId - firstID) / tileSheetData->columns;
 
-                std::shared_ptr<TileInfo> tileInfo = std::make_shared<TileInfo>(tileSheetData->textureID, tileId,
-                                                sf::IntRect((int)(textureX * tileSheetData->tileSize.x),
-                                                            (int)(textureY * tileSheetData->tileSize.y),
-                                                            (int)tileSheetData->tileSize.x, (int)tileSheetData->tileSize.y));
+                if(textureX < 0) { std::cout << "here" << std::endl; }
+
+                std::shared_ptr<TileInfo> tileInfo = std::make_shared<TileInfo>(
+                        tileSheetData->textureID,
+                        tileId,
+                        sf::IntRect(
+                                (int)(textureX * tileSheetData->tileSize.x),
+                                (int)(textureY * tileSheetData->tileSize.y),
+                                (int)tileSheetData->tileSize.x,
+                                (int)tileSheetData->tileSize.y
+                        )
+                );
 
                 itr = tileSet.insert(std::make_pair(tileId, tileInfo)).first;
             }

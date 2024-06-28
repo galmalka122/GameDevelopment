@@ -26,6 +26,8 @@ public:
 
             return 1; }
 
+        std::cout << filePath << "  found!!\n";
+
         // Add the resource to the resources' container.
         resources.insert(std::make_pair(filePath, std::make_pair(currentID, resource)));
 

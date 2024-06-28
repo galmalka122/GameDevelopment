@@ -1,7 +1,11 @@
 #ifndef Animation_h
 #define Animation_h
 
+#include <functional>
+#include <map>
 #include <vector>
+
+#include "Bitmask.h"
 
 struct FrameData {
 
@@ -31,6 +35,8 @@ enum class FacingDirection{
 
 };
 
+using AnimationAction = std::function<void(void)>;
+
 class Animation {
 
 public:
@@ -39,7 +45,9 @@ public:
 
     void AddFrame(int textureID, int x, int y, int width, int height, float displayTimeSeconds);
 
-    const FrameData* GetCurrentFrame() const;
+    void AddFrameAction(unsigned int frame, AnimationAction action);
+
+    [[nodiscard]] const FrameData* GetCurrentFrame() const;
 
     bool UpdateFrame(float deltaTime);
 
@@ -48,16 +56,21 @@ public:
 private:
 
     void IncrementFrame();
+    void RunActionForCurrentFrame();
 
     // Stores all the animation's frames.
     std::vector<FrameData> frames;
+
+    std::map<int, std::vector<AnimationAction>> actions;
+
+    Bitmask framesWithActions;
 
     int currentFrameIndex;
 
     // This is to help determine when to switch to the next frame.
     float currentFrameTime;
 
-    bool realeaseFirstFrame;
+    bool releaseFirstFrame;
 
 };
 
